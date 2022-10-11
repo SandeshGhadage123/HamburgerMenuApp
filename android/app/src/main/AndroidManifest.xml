@@ -3,7 +3,8 @@
    <application
         android:label="hamburger_menu_redesign"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:installLocation="preferExternal">
         <activity
             android:name=".MainActivity"
             android:exported="true"
