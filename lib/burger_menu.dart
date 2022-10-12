@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:hamburger_menu_redesign/user_preferences.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class burgermenu extends StatelessWidget {
+class burgermenu extends StatefulWidget {
+  @override
+  State<burgermenu> createState() => _burgermenuState();
+}
+
+class _burgermenuState extends State<burgermenu> {
   final padding = EdgeInsets.symmetric(horizontal: 20);
 
   @override
   Widget build(BuildContext context) {
-    final name = 'Atish Darpel';
-    final email = 'team@blockchaininternational.com';
-    final imageUrl =
-        'https://image.shutterstock.com/image-photo/smiling-young-middle-eastern-man-260nw-2063524544.jpg';
+    final user = UserPreferences.getUser();
+    //final name = 'Atish Darpel';
+    //final email = 'team@blockchaininternational.com';
+    //final imageUrl =
+        //'https://image.shutterstock.com/image-photo/smiling-young-middle-eastern-man-260nw-2063524544.jpg';
 
     return Drawer(
       child: Material(
         child: ListView(
           children: [
-            buildHeader(name: name, email: email, imageUrl: imageUrl),
+            buildHeader(
+                name: user.name,
+                email: user.email,
+                imageUrl: user.imageUrl
+            ),
             SizedBox(height: 5),
             Container(
               padding: padding,

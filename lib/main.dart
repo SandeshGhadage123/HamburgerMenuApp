@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hamburger_menu_redesign/user_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'burger_menu.dart';
+import 'model/user.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await UserPreferences.init();
   runApp(MaterialApp(
     theme: ThemeData(
       fontFamily: 'Inter',
@@ -13,26 +17,22 @@ void main() {
   ));
 }
 
-SharedPreferences localStorage;
-
-TextEditingController emailController = new TextEditingController();
-TextEditingController passwordController = new TextEditingController();
-
-//String email = '';
-//String password = '';
-
 class HamburgerMenu extends StatefulWidget {
-  static Future init() async {
-    localStorage = await SharedPreferences.getInstance();
-  }
-
   @override
   State<HamburgerMenu> createState() => _HamburgerMenuState();
 }
-
 class _HamburgerMenuState extends State<HamburgerMenu> {
+  late User user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    user = UserPreferences.getUser();
+  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Color(0xFFb09696),
       appBar: AppBar(
@@ -53,22 +53,21 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
                       radius: 60,
                       backgroundColor: Color(0xFFD9D9D9),
                       backgroundImage: NetworkImage('')),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextFormField(
-                      controller: emailController,
-                      obscureText: false,
                       keyboardType: TextInputType.emailAddress,
+                      initialValue: user.name,
+                      onChanged: (name) => user = user.copy(name:name),
                       decoration: InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Enter Email',
-                        prefixIcon: Icon(Icons.email),
+                        labelText: 'User Name',
+                        hintText: 'Enter Your Name Here',
+                        prefixIcon: Icon(Icons.person),
                         border: OutlineInputBorder(),
                       ),
-                      onChanged: (String value) {},
                       validator: (value) {
-                        return value!.isEmpty ? "please Enter Email" : null;
+                        return value!.isEmpty ? "please Enter Name" : null;
                       },
                     ),
                   ),
@@ -76,21 +75,16 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
+                      //text: user.email,
                       keyboardType: TextInputType.visiblePassword,
+                      initialValue: user.email,
+                      onChanged: (email) => user = user.copy(email:email),
                       decoration: InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'Enter Password',
-                        prefixIcon: Icon(Icons.password),
+                        labelText: 'Email',
+                        hintText: 'Enter Email',
+                        prefixIcon: Icon(Icons.email),
                         border: OutlineInputBorder(),
                       ),
-                      onChanged: (String value) {},
-                      validator: (value) {
-                        return value!.isEmpty
-                            ? "please Enter valid Password"
-                            : null;
-                      },
                     ),
                   ),
                   SizedBox(height: 20),
@@ -98,22 +92,14 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: MaterialButton(
                       minWidth: double.infinity,
-                      onPressed: () => {
-                        save(),
-                      },
-                      child: Text('Login'),
+                      child: Text('Save'),
                       color: Colors.teal,
                       textColor: Colors.white,
+                      onPressed: () {
+                        UserPreferences.setUser(user);
+                      },
                     ),
                   ),
-                  if (localStorage != null)
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        "User Logged in!!! ->  Email Id: ${localStorage.get('email')}  Password: ${localStorage.get('password')}",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    )
                 ],
               ),
             ),
@@ -122,10 +108,4 @@ class _HamburgerMenuState extends State<HamburgerMenu> {
       ),
     );
   }
-}
-
-save() async {
-  await HamburgerMenu.init();
-  localStorage.setString('email', emailController.text.toString());
-  localStorage.setString('password', passwordController.text.toString());
 }
