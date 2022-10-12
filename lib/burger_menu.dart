@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hamburger_menu_redesign/user_preferences.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class burgermenu extends StatefulWidget {
   @override
@@ -17,17 +19,14 @@ class _burgermenuState extends State<burgermenu> {
     //final name = 'Atish Darpel';
     //final email = 'team@blockchaininternational.com';
     //final imageUrl =
-        //'https://image.shutterstock.com/image-photo/smiling-young-middle-eastern-man-260nw-2063524544.jpg';
+    //'https://image.shutterstock.com/image-photo/smiling-young-middle-eastern-man-260nw-2063524544.jpg';
 
     return Drawer(
       child: Material(
         child: ListView(
           children: [
             buildHeader(
-                name: user.name,
-                email: user.email,
-                imageUrl: user.imageUrl
-            ),
+                name: user.name, email: user.email, imageUrl: user.imageUrl),
             SizedBox(height: 5),
             Container(
               padding: padding,
@@ -211,7 +210,7 @@ Widget buildHeader({
             CircleAvatar(
                 radius: 30,
                 backgroundColor: Color(0xFFD9D9D9),
-                backgroundImage: NetworkImage(imageUrl)),
+                backgroundImage: FileImage(File(imageUrl))),
             SizedBox(width: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

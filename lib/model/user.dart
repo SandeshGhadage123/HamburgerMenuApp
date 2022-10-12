@@ -10,26 +10,22 @@ class User {
   });
 
   User copy({
-  String? name,
+    String? name,
     String? email,
     String? imageUrl,
-}) =>
-  User(
-    name: name ?? this.name,
-    email: email ?? this.email,
-    imageUrl: imageUrl ?? this.imageUrl,
-  );
+  }) =>
+      User(
+        name: name ?? this.name,
+        email: email ?? this.email,
+        imageUrl: imageUrl ?? this.imageUrl,
+      );
 
   static User fromJson(Map<String, dynamic> json) => User(
-    name: json ['name'],
-    email: json ['email'],
-    imageUrl: json['imageUrl']
-  );
-
+      name: json['name'], email: json['email'], imageUrl: json['imageUrl']);
 
   Map<String, dynamic> toJson() => {
-    'name' : name,
-    'email' : email,
-    'imageUrl' : imageUrl,
-  };
+        'name': name,
+        'email': email,
+        'imageUrl': imageUrl,
+      };
 }

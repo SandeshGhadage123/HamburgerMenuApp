@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/user.dart';
 
@@ -8,9 +7,10 @@ class UserPreferences {
 
   static const _keyUser = 'user';
   static const myUser = User(
-    name : 'sandesh',
+    name: 'sandesh',
     email: 'sandesh@gmail.com',
-    imageUrl: 'https://image.shutterstock.com/image-photo/smiling-young-middle-eastern-man-260nw-2063524544.jpg',
+    imageUrl:
+        'https://image.shutterstock.com/image-photo/smiling-young-middle-eastern-man-260nw-2063524544.jpg',
   );
 
   static Future init() async =>
@@ -28,10 +28,3 @@ class UserPreferences {
     return json == null ? myUser : User.fromJson(jsonDecode(json));
   }
 }
-
-
-
-
-
-
-
